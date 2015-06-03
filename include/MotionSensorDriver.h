@@ -99,13 +99,9 @@ namespace DemconRobot
 			float deltaDistanceLeft;
 			float speedRight;
 			float speedLeft;
-<<<<<<< HEAD
-			int frequencyCounter;
-=======
 			float create_float_from_bytes(char * buf, int offset); 
->>>>>>> origin/robot_pose_ekf
 	};
-	
+
 	union{
 		float Float;
 		int Int;

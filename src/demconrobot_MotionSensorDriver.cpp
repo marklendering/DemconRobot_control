@@ -27,12 +27,7 @@ int main(int argc, char** argv)
 	}
 
 
-<<<<<<< HEAD
-	ros::Rate loop_rate(6000); //10hz
-=======
 	ros::Rate loop_rate(240); //10hz
-
->>>>>>> origin/robot_pose_ekf
 
 	while(n.ok()){
 		//ros::spinOnce();
