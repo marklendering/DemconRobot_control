@@ -3,7 +3,7 @@
 #include <player_node.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
-#define EKF
+//#define EKF
 
 using namespace std;
 
@@ -154,15 +154,15 @@ namespace DemconRobot
 
 		#ifndef EKF
 		/////////NEW ///////
-//		tf::Quaternion odom_quat;
-//		odom_quat.setRPY(0,0,m_theta);
-//
-//		tf::Transform transform;
-//		transform.setOrigin(tf::Vector3(m_x, m_y, 0.0));
-//		transform.setRotation(odom_quat);
-//
-//		tf::TransformBroadcaster broadcaster;
-//		broadcaster.sendTransform(tf::StampedTransform(transform, current_time, "odom", "base_footprint"));
+		tf::Quaternion odom_quat;
+		odom_quat.setRPY(0,0,m_theta);
+
+		tf::Transform transform;
+		transform.setOrigin(tf::Vector3(m_x, m_y, 0.0));
+		transform.setRotation(odom_quat);
+
+		tf::TransformBroadcaster broadcaster;
+		broadcaster.sendTransform(tf::StampedTransform(transform, current_time, "odom", "base_footprint"));
 		#endif
 
 
