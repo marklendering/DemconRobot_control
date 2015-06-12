@@ -24,6 +24,7 @@ namespace DemconRobot
 			ros::NodeHandle node_;
 			ros::Subscriber cmd_vel_sub_;
 			ros::Subscriber WheelDistances_sub;
+			ros::Subscriber WheelVelocities_sub;
 			ros::Publisher WheelVelocities_pub;
 
 			PlayerNode();
@@ -35,6 +36,7 @@ namespace DemconRobot
 
 			void cmdVelReceived(const geometry_msgs::Twist::ConstPtr& cmd_vel);
 			void deltaDistanceReceived(const beaglebone::WheelDistances::ConstPtr& dist);
+			void velocityReceived(const beaglebone::WheelVelocities::ConstPtr& vel);
 
 
 
@@ -42,6 +44,7 @@ namespace DemconRobot
 			//ros
 			ros::Publisher odom_pub;
 			ros::Time last_time;
+		    tf::TransformBroadcaster broadcaster;
 
 			//private methods
 			void publishOdometry();
@@ -51,6 +54,8 @@ namespace DemconRobot
 			//private variables
 			double wheelRadius;
 			double wheelDis;
+			float speedR;
+			float speedL;
 			float deltaDistR;
 			float deltaDistL;
 			float m_y;

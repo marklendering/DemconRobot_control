@@ -1,8 +1,8 @@
 
 
-robot_radius: 0.2
+robot_radius: 0.5
 map_type: voxel
-transform_tolerance: 7.0
+transform_tolerance: 0.5
 
 obstacle_layer:
   enabled: true
@@ -13,15 +13,11 @@ obstacle_layer:
   combination_method: 1
 
   scan:
+    sensor_frame: laser_scanner
     data_type: LaserScan
     topic: laser/scan
     marking: true
     clearing: true
-  bump:
-    data_type: PointCloud
-    topic: range_cloud
-    marking: true
-    clearing: false
 
 
 inflation_layer:

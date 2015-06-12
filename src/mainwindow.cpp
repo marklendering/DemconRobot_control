@@ -30,7 +30,7 @@ using namespace std;
 		move_base_msgs::MoveBaseGoal goal;
 		goal.target_pose.header.frame_id = "base_footprint";
 		goal.target_pose.header.stamp = ros::Time::now();
-        goal.target_pose.pose.position.x = 1.0;
+        goal.target_pose.pose.position.x = 3.0;
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
         vector<move_base_msgs::MoveBaseGoal> goals;
         goals.push_back(goal);
@@ -48,34 +48,35 @@ using namespace std;
 		goal.target_pose.header.frame_id = "base_footprint";
 		goal.target_pose.header.stamp = ros::Time::now();
 		
-        goal.target_pose.pose.position.x = 1.0;
-        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+        goal.target_pose.pose.position.x = 2.0;
+		goal.target_pose.pose.position.y = 0.0;
+        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(90));
         goals.push_back(goal);
 		
 		move_base_msgs::MoveBaseGoal goal1;
 		goal1.target_pose.header.frame_id = "base_footprint";
 		goal1.target_pose.header.stamp = ros::Time::now();
 		
-		goal1.target_pose.pose.position.x = 0.0;
-		goal1.target_pose.pose.position.y = -1.0;
-        goal1.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+		goal1.target_pose.pose.position.x = 2.0;
+		goal1.target_pose.pose.position.y = 0.0;
+        goal1.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(90));
         goals.push_back(goal1);
 		
 		move_base_msgs::MoveBaseGoal goal2;
 		goal2.target_pose.header.frame_id = "base_footprint";
 		goal2.target_pose.header.stamp = ros::Time::now();
 		
-		goal2.target_pose.pose.position.x = -1.0;
+		goal2.target_pose.pose.position.x = 2.0;
 		goal2.target_pose.pose.position.y = 0.0;
-        goal2.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+        goal2.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(90));
         goals.push_back(goal2);
 		
 		move_base_msgs::MoveBaseGoal goal3;
 		goal3.target_pose.header.frame_id = "base_footprint";
 		goal3.target_pose.header.stamp = ros::Time::now();
 		
-		goal3.target_pose.pose.position.x = 0.0;
-		goal3.target_pose.pose.position.y = 1.0;
+		goal3.target_pose.pose.position.x = 2.0;
+		goal3.target_pose.pose.position.y = 0.0;
         goal3.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
         goals.push_back(goal3);
 		ui->textBrowser->append("started Square task");
@@ -87,30 +88,29 @@ using namespace std;
 	void MainWindow::on_triangleButton_clicked()
 	{
 		vector<move_base_msgs::MoveBaseGoal> goals;
-		
 		move_base_msgs::MoveBaseGoal goal;
 		goal.target_pose.header.frame_id = "base_footprint";
 		goal.target_pose.header.stamp = ros::Time::now();
 		
-        goal.target_pose.pose.position.x = 1.0;
-        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+        goal.target_pose.pose.position.x = 2.0;
+        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(120));
         goals.push_back(goal);
 		
 		move_base_msgs::MoveBaseGoal goal1;
 		goal1.target_pose.header.frame_id = "base_footprint";
 		goal1.target_pose.header.stamp = ros::Time::now();
 		
-		goal1.target_pose.pose.position.x = -0.5;
-		goal1.target_pose.pose.position.y = -1.0;
-        goal1.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+		goal1.target_pose.pose.position.x = 2.0;
+		goal1.target_pose.pose.position.y = 0.0;
+        goal1.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(120));
         goals.push_back(goal1);
 		
 		move_base_msgs::MoveBaseGoal goal2;
 		goal2.target_pose.header.frame_id = "base_footprint";
 		goal2.target_pose.header.stamp = ros::Time::now();
 		
-		goal2.target_pose.pose.position.x = -0.5;
-		goal2.target_pose.pose.position.y = 1.0;
+		goal2.target_pose.pose.position.x = 2.0;
+		goal2.target_pose.pose.position.y = 0.0;
         goal2.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
         goals.push_back(goal2);
 		
@@ -120,7 +120,53 @@ using namespace std;
 
 	void MainWindow::on_pentagonButton_clicked()
 	{
+		vector<move_base_msgs::MoveBaseGoal> goals;
+		move_base_msgs::MoveBaseGoal goal;
+		goal.target_pose.header.frame_id = "base_footprint";
+		goal.target_pose.header.stamp = ros::Time::now();
+		
+        goal.target_pose.pose.position.x = 1.5;
+        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(72));
+        goals.push_back(goal);
+		
+		move_base_msgs::MoveBaseGoal goal1;
+		goal1.target_pose.header.frame_id = "base_footprint";
+		goal1.target_pose.header.stamp = ros::Time::now();
+		
+		goal1.target_pose.pose.position.x = 1.5;
+		goal1.target_pose.pose.position.y = 0.0;
+        goal1.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(72));
+        goals.push_back(goal1);
+		
+		move_base_msgs::MoveBaseGoal goal2;
+		goal2.target_pose.header.frame_id = "base_footprint";
+		goal2.target_pose.header.stamp = ros::Time::now();
+		
+		goal2.target_pose.pose.position.x = 1.5;
+		goal2.target_pose.pose.position.y = 0.0;
+        goal2.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(72));
+        goals.push_back(goal2);
 
+        move_base_msgs::MoveBaseGoal goal3;
+		goal3.target_pose.header.frame_id = "base_footprint";
+		goal3.target_pose.header.stamp = ros::Time::now();
+		
+		goal3.target_pose.pose.position.x = 1.5;
+		goal3.target_pose.pose.position.y = 0.0;
+        goal3.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(72));
+        goals.push_back(goal3);
+
+        move_base_msgs::MoveBaseGoal goal4;
+		goal4.target_pose.header.frame_id = "base_footprint";
+		goal4.target_pose.header.stamp = ros::Time::now();
+		
+		goal4.target_pose.pose.position.x = 1.5;
+		goal4.target_pose.pose.position.y = 0.0;
+        goal4.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
+        goals.push_back(goal4);
+		
+		ui->textBrowser->append("started Triangle task");
+		spin_thread = boost::thread(&MainWindow::handleButton, this, goals);
 	}
 
 	void MainWindow::on_stopButton_clicked()

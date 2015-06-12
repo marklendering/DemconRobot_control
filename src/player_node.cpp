@@ -11,7 +11,7 @@ namespace DemconRobot
 {
 	PlayerNode::PlayerNode()
 	{
-		ros::NodeHandle private_nh("");
+		ros::NodeHandle private_nh("playerNode");
 		robotId = "demconRobot1";
 		private_nh.getParam("demcon_config/RobotId", robotId);
 		ROS_INFO("I get ROBOT_ID: [%s] ", robotId.c_str());
@@ -20,7 +20,7 @@ namespace DemconRobot
 		private_nh.getParam("demcon_config/RobotType", robotType);
 		ROS_INFO("I get ROBOT_TYPE: [%s]", robotType.c_str());
 
-		wheelRadius = 0.085;
+		wheelRadius = 0.083;
 		private_nh.getParam("demcon_config/WheelRadius", wheelRadius);
 		ROS_INFO("I get wheel radius: [%f]", wheelRadius);
 
@@ -41,6 +41,8 @@ namespace DemconRobot
 		m_theta = 0;
 		deltaDistR = 0;
 		deltaDistL = 0;
+		speedR = 0;
+		speedL = 0;
 		WheelVelocities_pub = node_.advertise<beaglebone::WheelVelocities>("Wheel_Set_Velocity", 100);
 		odom_pub = node_.advertise<nav_msgs::Odometry>("odom", 10);
 
@@ -56,6 +58,7 @@ namespace DemconRobot
 		//subscribe to cmd_vel from move_base stack
 		cmd_vel_sub_ = node_.subscribe<geometry_msgs::Twist>("/cmd_vel", 1, boost::bind(&PlayerNode::cmdVelReceived, this, _1));
 		WheelDistances_sub = node_.subscribe<beaglebone::WheelDistances>("/Wheel_Delta_Distance", 10, boost::bind(&PlayerNode::deltaDistanceReceived, this, _1));
+		//WheelVelocities_sub = node_.subscribe<beaglebone::WheelVelocities>("/Wheel_Current_Velocities", 10, boost::bind(&PlayerNode::velocityReceived, this, _1));
 		return 0;
 	}
 
@@ -83,6 +86,19 @@ namespace DemconRobot
 		//TODO: check this method for functionality and improvements
 		double g_vel = cmd_vel -> linear.x;
 		double t_vel = cmd_vel -> angular.z;
+
+		float left = 0;
+		float right = 0;
+		if(abs(t_vel) < 0.28)
+		{
+			left = (2*g_vel - t_vel*wheelDis) / (2*wheelRadius);
+			right = (t_vel*wheelDis + 2*g_vel) / (2*wheelRadius);
+		}
+		else
+		{
+			left = (-t_vel*wheelDis) / (2*wheelRadius);
+			right = (t_vel*wheelDis) / (2*wheelRadius);
+		}
 /*
 		float left = 0;
 		float right = 0;
@@ -105,18 +121,27 @@ namespace DemconRobot
 			}
 		}
 */
+		//float left = g_vel / wheelRadius - t_vel;
+		//float right = g_vel / wheelRadius + t_vel;
 
-		float left = (2*g_vel - t_vel*wheelDis) / (2*wheelRadius);
-		float right = (t_vel*wheelDis + 2*g_vel) / (2*wheelRadius);
+		//float left = (2*g_vel - t_vel*wheelDis) / (2*wheelRadius);
+		//float right = (t_vel*wheelDis + 2*g_vel) / (2*wheelRadius);
 		//publish speeds to motors
-		printf("linear: %f angular: %f \n \r",g_vel, t_vel); 
-		printf("left: %f right: %f \n \r", left, right);
+		//printf("linear: %f angular: %f \n \r",g_vel, t_vel); 
+		//printf("left: %f right: %f \n \r", left, right);
 		//printf("left: %f, right: %f \n \r", msg.left, msg.right);
 		beaglebone::WheelVelocities msg;
 		msg.left = left;
 		msg.right = right;
 		WheelVelocities_pub.publish(msg);
 		//convert speed to speed per wheel and publish data
+	}
+	
+	void PlayerNode::velocityReceived(const beaglebone::WheelVelocities::ConstPtr& vel)
+	{
+		//speedR = vel -> right;
+		//speedL = vel -> left;
+		
 	}
 
 	void PlayerNode::deltaDistanceReceived(const beaglebone::WheelDistances::ConstPtr& dist)
@@ -132,18 +157,20 @@ namespace DemconRobot
 
 		//getspeed of motorsideA
 		//getspeed of motorsideB
-
 		ros::Time current_time = ros::Time::now();
 		double dt = (current_time - last_time).toSec();
 		last_time = current_time;
 		double avgDistance = (deltaDistL + deltaDistR) /2.0;
+		//double avgDistance = ((speedR + speedL)/2.0) * dt;
 		double deltaAngle = atan2((deltaDistR - deltaDistL), wheelDis);
+		//double deltaAngle = (speedR - speedL) / wheelDis;
 		deltaDistR = 0;
 		deltaDistL = 0;
 		double delta_x = avgDistance * cos(m_theta);
 		double delta_y = avgDistance * sin(m_theta);
 
 		double vx = avgDistance / dt;
+		//double vx = (speedR + speedL)/2.0;
 		double vy = 0.0;
 		double vth = deltaAngle / dt;
 
@@ -152,26 +179,33 @@ namespace DemconRobot
 		m_x += delta_x;
 		m_y += delta_y;
 
-		#ifndef EKF
-		/////////NEW ///////
-		tf::Quaternion odom_quat;
-		odom_quat.setRPY(0,0,m_theta);
+		geometry_msgs::Quaternion odom_quat;
+		odom_quat=tf::createQuaternionMsgFromYaw(m_theta);
 
-		tf::Transform transform;
-		transform.setOrigin(tf::Vector3(m_x, m_y, 0.0));
-		transform.setRotation(odom_quat);
+		geometry_msgs::TransformStamped odom_trans;
+		odom_trans.header.frame_id="odom";
+		odom_trans.child_frame_id="base_footprint";
 
-		tf::TransformBroadcaster broadcaster;
-		broadcaster.sendTransform(tf::StampedTransform(transform, current_time, "odom", "base_footprint"));
-		#endif
+		current_time = ros::Time::now();
+		odom_trans.header.stamp=current_time;
+		odom_trans.transform.translation.x=m_x;
+		odom_trans.transform.translation.y=m_y;
+		odom_trans.transform.translation.z=0.0;
+		odom_trans.transform.rotation=odom_quat;
+
+		broadcaster.sendTransform(odom_trans);
+
 
 
 		nav_msgs::Odometry odom;
 		odom.header.stamp = current_time;
 		odom.header.frame_id = "odom";
+		odom.child_frame_id="base_footprint";
 
 		odom.pose.pose.position.x = m_x;
 		odom.pose.pose.position.y = m_y;
+		odom.pose.pose.position.z = 0.0;
+		odom.pose.pose.orientation = odom_quat;
 		//odom.pose.covariance[0] = 0.001;
 		//odom.pose.covariance[7] = 0.001;
 		//odom.pose.covariance[14] = 1000000;
@@ -179,8 +213,8 @@ namespace DemconRobot
 		//odom.pose.covariance[28] = 1000000;
 		//odom.pose.covariance[35] = 1.0;
 
-		geometry_msgs::Quaternion odom_quat2 = tf::createQuaternionMsgFromYaw(m_theta);
-		odom.pose.pose.orientation = odom_quat2;
+		//geometry_msgs::Quaternion odom_quat2 = tf::createQuaternionMsgFromYaw(m_theta);
+		//odom.pose.pose.orientation = odom_quat2;
 
 //		odom.child_frame_id = "base_footprint";
 		odom.twist.twist.linear.x = vx;
@@ -196,6 +230,7 @@ namespace DemconRobot
 		//odom.twist.covariance = odom.pose.covariance;
 
 		odom_pub.publish(odom);
+
 
 		/*
 		///////OLD WORKING///////
@@ -213,7 +248,7 @@ namespace DemconRobot
 		odom_trans.transform.translation.z=0.0;
 		odom_trans.transform.rotation=odom_quat;
 
-		tf::TransformBroadcaster broadcaster;
+		//tf::TransformBroadcaster broadcaster;
 		broadcaster.sendTransform(odom_trans);
 
 		nav_msgs::Odometry odom;

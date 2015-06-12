@@ -31,11 +31,11 @@ int main(int argc, char** argv)
 	}
 
 
-	ros::Rate loop_rate(240); //10hz
+	ros::Rate loop_rate(120); //10hz
 
 
 	while(n.ok()){
-		ros::spinOnce();
+		ros::spinOnce();	
 		demconRobotPlayer.doUpdate();
 		loop_rate.sleep();
 	}

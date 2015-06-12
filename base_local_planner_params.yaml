@@ -25,8 +25,8 @@ NavfnROS:
 
 
 # Select local planner:
-base_local_planner: "dwa_local_planner/DWAPlannerROS"
-# base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+#base_local_planner: "dwa_local_planner/DWAPlannerROS"
+base_local_planner: "base_local_planner/TrajectoryPlannerROS"
 #base_local_planner: "smooth_local_planner/SmoothLocalPlanner"
 
 
@@ -37,71 +37,68 @@ base_local_planner: "dwa_local_planner/DWAPlannerROS"
 #  - name: 'aggressive_reset'
 #    type: 'clear_costmap_recovery/ClearCostmapRecovery'
 
-# For DWA local planner:
+
 DWAPlannerROS:
-  max_vel_x: 0.4
+  acc_lim_x: 3.0
+  acc_lim_y: 0.0
+  acc_lim_th: 5.0
+
+  max_trans_vel: 2.5
+  min_trans_vel: 0.1
+
+  max_vel_x: 0.5
   min_vel_x: 0.0
 
-  min_vel_y: 0.0
   max_vel_y: 0.0
+  min_vel_y: 0.0
 
-  max_vel_theta: 2.0
-  min_vel_theta: -2.0
+  max_rot_vel: 5.0
+  min_rot_vel: 5.0
 
-  acc_lim_x: 1.0
-  acc_lim_y: 0.0
-  acc_lim_theta: 5.0
-
-#tolerance parameters
-  yaw_goal_tolerance: 1
-  xy_goal_tolerance: 0.15
-  #robot will rotate on spot if location was reached and this set to true.
+  yaw_goal_tolerance: 0.3
+  xy_goal_tolerance: 0.25
   latch_xy_goal_tolerance: false
 
-  # Forward simulation parameters:
-  sim_time: 1.7  # default 1.7
-  vx_samples: 3 # default 3
-  vy_samples: 1  # default 10
-  vtheta_samples: 20  # default 20
+  sim_time: 1.7
+  xv_samples: 10
+  vy_samples: 1
+  vtheta_samples: 20
+  controller_frequency: 20
+  penalize_negatie_x: true
 
-  dwa: true
-
-  holonomic_robot: false
-  meter_scoring: true
-
-  # Obstacle avoidance heaviness:
-  # and other factors to influence how much to stick to global path and how much to avoid obstacles.
-  path_distance_bias: 32.0  # default: 32
-  goal_distance_bias: 24.0  # default: 24
-  occdist_scale: 0.01  # default: 0.01
-  publish_traj_pc: true
-  publish_cost_grid_pc: true
+  path_distance_bias: 32.0
+  goal_distance_bias: 24.0
+  occdist_scale: 0.50
+  forward_point_distance: 0.325
+  stop_time_buffer: 0.2
+  scaling_speed: 0.25
   global_frame_id: map
 
+  oscillation_reset_dist: 0.05
 
-# Other planner parameters:
+  prune_plan: true
+
 TrajectoryPlannerROS:
   max_vel_x: 0.8
-  min_vel_x: 0.0
+  min_vel_x: 0.3
   min_vel_y: 0.0
   max_vel_y: 0.0
-  max_vel_theta: 0.6
-  min_vel_theta: -0.6
-  acc_lim_x: 0.3
-  acc_lim_theta: 3
+  max_vel_theta: 5.0
+  min_vel_theta: -5.0 
+  acc_lim_x: 1.2
+  acc_lim_theta: 5
   acc_lim_y: 0.0
 
   vtheta_samples: 10
   dwa: true
-  sim_time: 3.0
+  sim_time: 1.7
   holonomic_robot: false
-  meter_scoring: true
-  occdist_scale: 0.25
+  occdist_scale: 0.01
   gdist_scale: 0.8
-  pdist_scale: 1
-  heading_scoring: false
-  heading_lookahead: 2.0
+  pdist_scale: 0.6
+  heading_lookahead: 0.325
+  meter_scoring: true
 
-  yaw_goal_tolerance: 0.05
-  xy_goal_tolerance: 0.15
-  latch_xy_goal_tolerance: true
+  yaw_goal_tolerance: 0.1
+  xy_goal_tolerance: 0.25
+  latch_xy_goal_tolerance: false

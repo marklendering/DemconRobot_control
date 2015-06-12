@@ -2,9 +2,9 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="beaglebone">
 	<xacro:property name="bodyWidth" value="0.36" />
 	<xacro:property name="bodyLength" value="0.44" />
-	<xacro:property name="bodyHeigth" value="0.054" />
-	<xacro:property name="wheelRadius" value="0.0825" />
-	<xacro:property name="wheelWidth" value="0.092" />
+	<xacro:property name="bodyHeigth" value="0.055" />
+	<xacro:property name="wheelRadius" value="0.085" />
+	<xacro:property name="wheelWidth" value="0.098" />
 	<xacro:property name="M_PI" value="3.1415926535" />
 	<link name="base_footprint">
 		<visual>
@@ -12,6 +12,11 @@
 				<box size="0.001 0.001 0.001" />
 			</geometry>
 		</visual>
+		<collision>
+			<geometry>
+				
+			</geometry>
+		</collision>
 	</link>
 
 	<link name="base_link">
@@ -23,11 +28,11 @@
 				<color rgba="0.5 0.5 0.5 1"/>
 			</material>
 		</visual>
-		<collision>
+		<!--<collision>
 			<geometry>
 				<cylinder length="0.2" radius="0.4" />
 			</geometry>
-		</collision>
+		</collision>-->
 	</link>
 
 	<joint name="base_footprint_joint" type="fixed">
@@ -82,7 +87,7 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 ${wheelRadius}"/>
 			<geometry>
-				<cylinder radius="0.03" length="0.01" />
+				<cylinder radius="0.033" length="0.01" />
 			</geometry>
 			<material name="white">
 				<color rgba="1 1 1 1"/>
@@ -129,7 +134,7 @@
 	<joint name="base_to_laser" type="fixed">
 		<parent link="base_link"/>
 		<child link="laser_scanner"/>
-		<origin xyz="0 0.18 0" rpy="0 0 ${-0.5*M_PI}"/>
+		<origin xyz="0 0.185 0" rpy="0 0 ${-0.5*M_PI}"/>
 	</joint>
 	
 	<joint name="base_to_imu" type="fixed">
