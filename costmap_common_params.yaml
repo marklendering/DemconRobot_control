@@ -26,5 +26,4 @@ inflation_layer:
   inflation_radius: 2
 
 static_layer:
-  enabled: true
-
+  enabled: false

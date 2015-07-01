@@ -18,9 +18,6 @@ namespace DemconRobot
 	class PlayerNode
 	{
 		public:
-			//tf::TranformBroadcaster m_odom_broadcaster;
-			//tf::Transform transform;
-
 			ros::NodeHandle node_;
 			ros::Subscriber cmd_vel_sub_;
 			ros::Subscriber WheelDistances_sub;
@@ -41,17 +38,13 @@ namespace DemconRobot
 
 
 		private:
-			//ros
 			ros::Publisher odom_pub;
 			ros::Time last_time;
-		    tf::TransformBroadcaster broadcaster;
 
-			//private methods
 			void publishOdometry();
 			void addRangeToCloud(const sensor_msgs::Range& range, sensor_msgs::PointCloud& pointcloud);
 			void calculateMovementDelta();
 
-			//private variables
 			double wheelRadius;
 			double wheelDis;
 			float speedR;

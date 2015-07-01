@@ -1,5 +1,3 @@
-
-//#include <actionlib/client/simple_action_client.h>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <tf/transform_broadcaster.h>
@@ -30,7 +28,7 @@ using namespace std;
 		move_base_msgs::MoveBaseGoal goal;
 		goal.target_pose.header.frame_id = "base_footprint";
 		goal.target_pose.header.stamp = ros::Time::now();
-        goal.target_pose.pose.position.x = 3.0;
+        goal.target_pose.pose.position.x = 1.0;
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(radians(0));
         vector<move_base_msgs::MoveBaseGoal> goals;
         goals.push_back(goal);

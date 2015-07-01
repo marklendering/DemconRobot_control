@@ -1,16 +1,7 @@
-
-
-
-
-
-
 #include <assert.h>
-
 #include <ros/ros.h>
 #include <MotionSensorDriver.h>
-
 #include <math.h>
-
 
 using namespace std;
 using namespace DemconRobot;

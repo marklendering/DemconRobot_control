@@ -72,27 +72,6 @@ namespace DemconRobot
 		requestCANData('D', ALLMBEDS);
 		getCanData();
 		getCanData();
-		//requestCANData('V', ALLMBEDS);
-		//getCanData();
-		//getCanData();
-		//requestCANData(IMUACC);
-		//getCanData();
-		//requestCANData(IMUGYR);
-		//getCanData();
-
-
-		//request candata for distance traveled
-		//getdata for mbed one
-		//getdata for mbed two
-		//
-
-		//get LRS data every tick
-		//every 10 ticks, update rest of data.
-
-		//get LRS data
-		//get Speed data
-		//get IMU data
-
 	}
 
 	void MotionSensorDriver::requestCANData(int canId)

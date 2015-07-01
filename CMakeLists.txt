@@ -58,6 +58,11 @@ target_link_libraries(RobotController ${catkin_LIBRARIES})
 target_link_libraries(RobotController ${Boost_LIBRARIES})
 add_dependencies(RobotController beablebone_gencpp)
 
+add_executable(xboxController src/xboxDriver.cpp)
+target_link_libraries(xboxController ${catkin_LIBRARIES})
+target_link_libraries(xboxController ${Boost_LIBRARIES})
+add_dependencies(xboxController beablebone_gencpp)
+
 ####user interface####
 SET(beaglebone_SRCS
 	src/mainwindow.cpp
