@@ -40,15 +40,6 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${QT_LI
 
 
 
-#sensor and motor drivers
-add_executable(MotionSensorDriver src/demconrobot_MotionSensorDriver.cpp)
-add_library(Driver src/MotionSensorDriver.cpp src/CanDriver.cpp)
-target_link_libraries(MotionSensorDriver Driver)
-target_link_libraries(MotionSensorDriver ${catkin_LIBRARIES})
-target_link_libraries(MotionSensorDriver ${Boost_LIBRARIES})
-add_dependencies(MotionSensorDriver beaglebone_gencpp)
-add_dependencies(Driver beaglebone_gencpp)
-
 #robot controller
 
 add_executable(RobotController src/demconrobot_player.cpp) 
